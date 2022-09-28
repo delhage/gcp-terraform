@@ -1,0 +1,16 @@
+# Intellij
+.idea/
+# vscode
+.vscode/
+
+# Terraform state files
+*.tfstate
+*.tfstate.backup
+*.tfstate.*.backup
+.terraform.lock.hcl
+
+# Terraform work directory
+.terraform/
+
+# Terraform variable settings
+*.tfvars
