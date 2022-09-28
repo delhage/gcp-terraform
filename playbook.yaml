@@ -1,7 +1,7 @@
 ---
 - name: Setup kubernetes
   hosts: k8s
-  remote_user: lasse_nohup_se
+  remote_user: ubuntu
   become: true
 
   tasks:
@@ -70,3 +70,29 @@
     lineinfile:
       path: /etc/hosts
       line: "{{ cp_ip.stdout }} k8scp"
+
+  - name: Copy calico config
+    become: false
+    get_url:
+      url: https://docs.projectcalico.org/manifests/calico.yaml
+      dest: /home/ubuntu/calico.yaml
+    when: hostvars[inventory_hostname]['inventory_hostname'] == "cp"
+
+  - name: Kubeadm config
+    become: false
+    copy:
+      src: files/kubeadm-config.yaml
+      dest: /home/ubuntu/kubeadm-config.yaml
+    when: hostvars[inventory_hostname]['inventory_hostname'] == "cp"
+
+  - name: Kubeadm init script
+    become: false
+    copy:
+      src: files/kubeadm-init.sh
+      dest: /home/ubuntu/kubeadm-init.sh
+    when: hostvars[inventory_hostname]['inventory_hostname'] == "cp"
+
+  - name: Bash completion for kubectl
+    lineinfile:
+      path: /home/ubuntu/.bashrc
+      line: source <(kubectl completion bash)
