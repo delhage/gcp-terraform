@@ -20,6 +20,11 @@ resource "google_compute_firewall" "default" {
   source_ranges = ["0.0.0.0/0"]
 }
 
+resource "google_compute_project_metadata_item" "default" {
+  key   = "ssh-keys"
+  value = "${var.ssh_user.name}:${file(var.ssh_user.public_key_path)}"
+}
+
 # Create a single Compute Engine instance
 resource "google_compute_instance" "default" {
   name         = "cp"
