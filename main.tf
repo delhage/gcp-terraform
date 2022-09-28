@@ -42,9 +42,6 @@ resource "google_compute_instance" "default" {
     }
   }
 
-  # Install Flask
-  metadata_startup_script = "sudo apt-get update; sudo apt-get install -yq install curl apt-transport-https vim git wget gnupg2 software-properties-common apt-transport-https ca-certificates uidmap"
-
   network_interface {
     subnetwork = "lfclass"
     access_config {
@@ -68,9 +65,6 @@ resource "google_compute_instance" "worker" {
       size  = 20
     }
   }
-
-  # Install Flask
-  metadata_startup_script = "sudo apt-get update; sudo apt-get install -yq build-essential python-pip rsync; pip install flask"
 
   network_interface {
     subnetwork = "lfclass"
