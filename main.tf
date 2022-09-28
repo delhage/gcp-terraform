@@ -16,7 +16,8 @@ resource "google_compute_firewall" "default" {
   allow {
     protocol = "all"
   }
-  source_ranges = ["0.0.0.0"]
+  direction     = "INGRESS"
+  source_ranges = ["0.0.0.0/0"]
 }
 
 # Create a single Compute Engine instance
