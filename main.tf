@@ -48,6 +48,10 @@ resource "google_compute_instance" "default" {
       # Include this section to give the VM an external IP address
     }
   }
+
+  depends_on = [
+    google_compute_subnetwork.lfclass
+  ]
 }
 
 resource "google_compute_instance" "worker" {
@@ -72,4 +76,8 @@ resource "google_compute_instance" "worker" {
       # Include this section to give the VM an external IP address
     }
   }
+
+  depends_on = [
+    google_compute_subnetwork.lfclass
+  ]
 }
