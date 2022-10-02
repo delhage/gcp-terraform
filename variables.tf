@@ -10,7 +10,7 @@ variable "region" {
 
 variable "ssh_user" {
   type = object({
-    name           = string
-    public_key     = string
+    name       = string
+    public_key = string
   })
 }
