@@ -1,5 +1,11 @@
-variable "project" {
-  default = "nohup-364111"
+variable "project_id" {
+  type        = string
+  description = "The GCP Id"
+}
+
+variable "region" {
+  type    = string
+  default = "europe-north1"
 }
 
 variable "ssh_user" {

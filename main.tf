@@ -1,3 +1,8 @@
+resource "google_storage_bucket" "gcs_bucket" {
+  name     = "lf258-tf-state"
+  location = var.region
+}
+
 resource "google_compute_network" "vpc_network" {
   name                    = "lfclass"
   auto_create_subnetworks = false
@@ -23,14 +28,13 @@ resource "google_compute_firewall" "default" {
 resource "google_compute_project_metadata_item" "default" {
   key     = "ssh-keys"
   value   = "${var.ssh_user.name}:${file(var.ssh_user.public_key_path)}"
-  project = var.project
+  project = var.project_id
 }
 
 # Create a single Compute Engine instance
 resource "google_compute_instance" "default" {
   name         = "cp"
   machine_type = "e2-standard-2"
-  zone         = "europe-north1-a"
   tags         = ["ssh"]
 
   metadata = {
@@ -58,7 +62,6 @@ resource "google_compute_instance" "default" {
 resource "google_compute_instance" "worker" {
   name         = "worker"
   machine_type = "e2-standard-2"
-  zone         = "europe-north1-a"
   tags         = ["ssh"]
 
   metadata = {
