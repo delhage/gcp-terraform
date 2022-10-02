@@ -38,7 +38,7 @@ jobs:
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      run: terraform plan -var ssh_user="{\"name\": \"ubuntu\": \"public_key\": \"$SSH_KEY\"}"
+      run: terraform plan -var ssh_user="{\"name\":\"ubuntu\",\"public_key\":\"$SSH_KEY\"}"
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.LF258 }}
         SSH_KEY: ${{ secrets.SSH_KEY }}
