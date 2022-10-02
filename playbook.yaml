@@ -4,6 +4,10 @@
   remote_user: ubuntu
   become: true
 
+  vars_files:
+    - vars/creds.yaml
+    - vars/solution.yaml
+
   tasks:
   - name: Get IP of cp
     run_once: true
@@ -71,25 +75,39 @@
       path: /etc/hosts
       line: "{{ cp_ip.stdout }} k8scp"
 
-  - name: Copy calico config
-    become: false
-    get_url:
-      url: https://docs.projectcalico.org/manifests/calico.yaml
-      dest: /home/ubuntu/calico.yaml
-    when: hostvars[inventory_hostname]['inventory_hostname'] == "cp"
+  - name: Download class materials to cp
+    block:
 
-  - name: Kubeadm config
-    become: false
-    copy:
-      src: files/kubeadm-config.yaml
-      dest: /home/ubuntu/kubeadm-config.yaml
-    when: hostvars[inventory_hostname]['inventory_hostname'] == "cp"
+    - name: Download class tarball
+      get_url:
+        url: https://training.linuxfoundation.org/cm/LFS258/{{ tarball }}
+        dest: /home/ubuntu/{{ tarball }}
+        username: "{{ username }}"
+        password: "{{ password }}"
 
-  - name: Kubeadm init script
+    - name: Unpack class tarball
+      unarchive:
+        src: /home/ubuntu/{{ tarball }}
+        dest: /home/ubuntu/
+        remote_src: yes
+
+    - name: Copy calico config
+      get_url:
+        url: https://docs.projectcalico.org/manifests/calico.yaml
+        dest: /home/ubuntu/calico.yaml
+
+    - name: Kubeadm config
+      copy:
+        src: files/kubeadm-config.yaml
+        dest: /home/ubuntu/kubeadm-config.yaml
+
+    - name: Kubeadm init script
+      copy:
+        src: files/kubeadm-init.sh
+        dest: /home/ubuntu/kubeadm-init.sh
+        mode: +x
+
     become: false
-    copy:
-      src: files/kubeadm-init.sh
-      dest: /home/ubuntu/kubeadm-init.sh
     when: hostvars[inventory_hostname]['inventory_hostname'] == "cp"
 
   - name: Bash completion for kubectl

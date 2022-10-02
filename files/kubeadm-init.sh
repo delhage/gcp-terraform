@@ -1,6 +1,6 @@
 #!/bin/bash
 
-kubeadm init --config=kubeadm-config.yaml --upload-certs \
+sudo kubeadm init --config=kubeadm-config.yaml --upload-certs \
 	| tee kubeadm-init.out
 
 mkdir .kube
