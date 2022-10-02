@@ -13,4 +13,5 @@ variable "ssh_user" {
     name       = string
     public_key = string
   })
+  sensitive = true
 }
