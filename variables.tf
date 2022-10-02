@@ -9,8 +9,8 @@ variable "region" {
 }
 
 variable "ssh_user" {
-  default = {
-    name            = "ubuntu"
-    public_key_path = "~/.ssh/id_rsa.pub"
-  }
+  type = object({
+    name           = string
+    public_key     = string
+  })
 }
