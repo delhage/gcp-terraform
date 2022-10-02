@@ -1,5 +1,5 @@
 provider "google" {
-  project = "lfkube-335712"
+  project = var.project
   region  = "europe-north1"
   zone    = "europe-north1-a"
 }

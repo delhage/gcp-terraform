@@ -1,18 +1,18 @@
 resource "google_compute_network" "vpc_network" {
-  name = "lfclass"
+  name                    = "lfclass"
   auto_create_subnetworks = false
 }
 
 resource "google_compute_subnetwork" "lfclass" {
-  name = "lfclass"
+  name          = "lfclass"
   ip_cidr_range = "10.0.0.0/24"
-  network = google_compute_network.vpc_network.name
+  network       = google_compute_network.vpc_network.name
 }
 
 resource "google_compute_firewall" "default" {
-  name = "lfclass"
+  name    = "lfclass"
   network = google_compute_network.vpc_network.name
-  
+
   allow {
     protocol = "all"
   }
@@ -21,8 +21,9 @@ resource "google_compute_firewall" "default" {
 }
 
 resource "google_compute_project_metadata_item" "default" {
-  key   = "ssh-keys"
-  value = "${var.ssh_user.name}:${file(var.ssh_user.public_key_path)}"
+  key     = "ssh-keys"
+  value   = "${var.ssh_user.name}:${file(var.ssh_user.public_key_path)}"
+  project = var.project
 }
 
 # Create a single Compute Engine instance
